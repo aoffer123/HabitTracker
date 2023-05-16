@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -29,8 +29,11 @@ import Checkbox from '@mui/material/Checkbox';
 
 
 const Add = () => {
-    const [category, setCategory] = React.useState('');
-    const [importance, setImportance] = React.useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [category, setCategory] = useState('');
+    const [importance, setImportance] = useState('');
+    const [error,setError] = useState(null);
 
     const handleChange = (event) => {
         setCategory(event.target.value);
@@ -40,10 +43,39 @@ const Add = () => {
         setImportance(event.target.value);
     };
 
+
     const handleClick = () => {
         console.info('You clicked the Chip.');
       };
 
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        //temp replace with date logic
+        const date = Date(Date.now);
+        const habit = {name,description,category,importance,date}
+        const res = await fetch('api/habits',{
+            method: 'POST',
+            body: JSON.stringify(habit),
+            headers: {
+                'Content-Type':'application/json'
+            }
+        })
+        const json = await res.json();
+
+        if (!res.ok){
+            setError(json.error);
+        }else{
+            setError(null);
+            setName('');
+            setDescription('');
+            setCategory('');
+            setImportance('');
+            console.log('worked lol');
+        }
+    }
+    
 
 
 
@@ -61,6 +93,8 @@ const Add = () => {
                             startAdornment: <InputAdornment position="start">Name</InputAdornment>
                         }}
                         variant="filled"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
                     />
                     <TextField
                         label="Enter a Description for your Habit"
@@ -70,6 +104,8 @@ const Add = () => {
                             startAdornment: <InputAdornment position="start">Description</InputAdornment>
                         }}
                         variant="filled"
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
                     />
                     <FormControl sx={{ minWidth: 300 }} size="medium">
                         <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -108,6 +144,7 @@ const Add = () => {
                             <MenuItem value={"Trivial"}>Trivial</MenuItem>
                         </Select>
                     </FormControl>
+
                     <Stack direction="row" spacing={1}>
                     <Checkbox label="M" variant="outlined" color="primary" onClick={handleClick} />
                     <Chip label="T" variant="outlined" color="primary" onClick={handleClick} />
@@ -118,9 +155,13 @@ const Add = () => {
                     <Chip label="S" variant="outlined" color="primary" onClick={handleClick} />
                     
                     </Stack>
-                    <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
+
+
+                    <Button variant="contained" sx={{ m: 2, width: '25ch' }} onClick={handleSubmit}>
                         Save
                     </Button>
+                    {error && <div>{error}</div>}
+                    <Box></Box>
 
                     
                     <Box></Box>
