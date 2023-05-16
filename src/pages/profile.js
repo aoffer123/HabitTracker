@@ -10,7 +10,7 @@ const Profile = () => {
         height: '100vh'
       }}
     >
-      <h1>View your profile</h1>
+    
     </div>
   );
 };

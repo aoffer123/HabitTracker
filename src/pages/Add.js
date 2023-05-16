@@ -19,6 +19,9 @@ import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
+import Chip from '@mui/material/Chip';
+import { Label } from '@mui/icons-material';
+import Checkbox from '@mui/material/Checkbox';
 
 
 
@@ -37,10 +40,12 @@ const Add = () => {
         setImportance(event.target.value);
     };
 
-    
-    
+    const handleClick = () => {
+        console.info('You clicked the Chip.');
+      };
 
-    
+
+
 
     return (
         <Box
@@ -73,13 +78,17 @@ const Add = () => {
                             id="demo-simple-select"
                             value={category}
                             label="Category"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Description</InputAdornment>
+                            }}
                             onChange={handleChange}
+                            variant="filled"
                         >
-                        <MenuItem value={"Exercise"}>Exercise</MenuItem>
-                        <MenuItem value={"Health"}>Health</MenuItem>
-                        <MenuItem value={"Financial"}>Financial</MenuItem>
-                        <MenuItem value={"Wellbeing"}>Wellbeing</MenuItem>
-                        <MenuItem value={"Around The House"}>Around The House</MenuItem>
+                            <MenuItem value={"Exercise"}>Exercise</MenuItem>
+                            <MenuItem value={"Health"}>Health</MenuItem>
+                            <MenuItem value={"Financial"}>Financial</MenuItem>
+                            <MenuItem value={"Wellbeing"}>Wellbeing</MenuItem>
+                            <MenuItem value={"Around The House"}>Around The House</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl sx={{ minWidth: 300 }} size="medium">
@@ -90,19 +99,32 @@ const Add = () => {
                             value={importance}
                             label="Importance"
                             onChange={handleChange2}
+                            variant="filled"
                         >
-                        <MenuItem value={"Critical"}>Critical</MenuItem>
-                        <MenuItem value={"High"}>High</MenuItem>
-                        <MenuItem value={"Medium"}>Medium</MenuItem>
-                        <MenuItem value={"Low"}>Low</MenuItem>
-                        <MenuItem value={"Trivial"}>Trivial</MenuItem>
+                            <MenuItem value={"Critical"}>Critical</MenuItem>
+                            <MenuItem value={"High"}>High</MenuItem>
+                            <MenuItem value={"Medium"}>Medium</MenuItem>
+                            <MenuItem value={"Low"}>Low</MenuItem>
+                            <MenuItem value={"Trivial"}>Trivial</MenuItem>
                         </Select>
                     </FormControl>
+                    <Stack direction="row" spacing={1}>
+                    <Checkbox label="M" variant="outlined" color="primary" onClick={handleClick} />
+                    <Chip label="T" variant="outlined" color="primary" onClick={handleClick} />
+                    <Chip label="W" variant="outlined" color="primary" onClick={handleClick} />
+                    <Chip label="T" variant="outlined" color="primary" onClick={handleClick} />
+                    <Chip label="F" variant="outlined" color="primary" onClick={handleClick} />
+                    <Chip label="S" variant="outlined" color="primary" onClick={handleClick} />
+                    <Chip label="S" variant="outlined" color="primary" onClick={handleClick} />
+                    
+                    </Stack>
                     <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
                         Save
                     </Button>
-                    <Box></Box>
+
                     
+                    <Box></Box>
+
                 </Stack>
 
 

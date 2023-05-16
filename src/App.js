@@ -7,13 +7,15 @@ import Profile from './pages/profile';
 import Todo from './pages/Doing';
 import Add from './pages/Add';
 import Home from './pages/Home';
-
+import SignInSide from './pages/SignInSide';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
   
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
+      <Route path='SignInSide' element={<SignInSide/>} />
         <Route path='home' element={<Home/>} />
         <Route path='add' element={<Add/>} />
         <Route path='habit' element={<Habit/>} />
