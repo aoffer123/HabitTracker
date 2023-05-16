@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const Nav = styled.nav`
   background: #7bd1c9;
   height: 0px;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 0px;
   z-index: 12;
   /* Third Nav */
@@ -18,10 +18,10 @@ export const NavLink = styled(Link)`
   align-items: center;
   text-decoration: none;
   padding: 0 1rem;
-  height: 100%;
+  height: 30%;
   cursor: pointer;
   &.active {
-    color: #453d3d;
+    color: #000000;
   }
 `;
   

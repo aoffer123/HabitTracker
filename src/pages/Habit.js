@@ -25,9 +25,6 @@ export default function Habit() {
         <Stack direction="column" justifyContent="space-evenly" alignItems="flex-start" spacing={2}>
           <h1>Add A Habit</h1>
           <hr />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar />
-          </LocalizationProvider>
           <Link to="/Add">
             <Button variant="contained" startIcon={<AddIcon />}>
               Add A Habit
