@@ -22,7 +22,7 @@ const getHabit = async (req,res) => {
 };
 
 const createHabit = async (req,res) =>{
-    const {name,description,category,importance,date} = req.body;
+    const {name,userId,description,category,importance,date} = req.body;
     try {
         const newHabit = await habitModel.create({name,description,category,importance,date});
         res.status(200).json(newHabit);
