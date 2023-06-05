@@ -54,6 +54,7 @@ const Add = () => {
         event.preventDefault();
         //temp replace with date logic
         const date = Date(Date.now);
+        const userId = ""; // change
         const habit = {name,userId,description,category,importance,date}
         const res = await fetch('api/habits',{
             method: 'POST',

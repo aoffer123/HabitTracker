@@ -1,9 +1,13 @@
 const habitModel = require('../models/habit');
 const mongoose = require('mongoose');
-
+const jwt = require('jsonwebtoken');
 
 const getAllHabits = async (req,res) =>{
-    const habits = await habitModel.find({}).sort({createdAt: -1});
+    
+    const token = req.rawHeaders.filter((entry) => {return entry.startsWith('jwt=')})[0].substring(4);
+    const userId = jwt.decode(token, process.env.KEY).id;
+    console.log(userId)
+    const habits = await habitModel.find({userId: userId}).sort({createdAt: -1});
     res.status(200).json(habits);
 };
 
@@ -22,9 +26,11 @@ const getHabit = async (req,res) => {
 };
 
 const createHabit = async (req,res) =>{
-    const {name,userId,description,category,importance,date} = req.body;
+    const {name,description,category,importance,date} = req.body;
+    const token = req.rawHeaders.filter((entry) => {return entry.startsWith('jwt=')})[0].substring(4);
+    const userId = jwt.decode(token, process.env.KEY).id;
     try {
-        const newHabit = await habitModel.create({name,description,category,importance,date});
+        const newHabit = await habitModel.create({name,userId,description,category,importance,date});
         res.status(200).json(newHabit);
     } catch (e) {
         res.status(400).json({error: e.message});

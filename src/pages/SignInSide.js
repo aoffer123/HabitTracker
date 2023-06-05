@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -29,17 +30,41 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [error,setError] = useState(null);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
+
+    const user ={
+      name: data.get('name'),
       password: data.get('password'),
-    });
+    };
+    
+    const res = await fetch('api/users/login',{
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+          'Content-Type':'application/json'
+      }
+  })
+  const json = await res.json();
+
+  if (!res.ok){
+      setError(json.error);
+  }else{
+      setError(null);
+      navigate('/Home');
+      console.log('worked lol');
+  }
+
+
   };
 
   return (
     <ThemeProvider theme={theme}>
+      {error && <p>"Login Failed"</p>}
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -77,10 +102,10 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="name"
+                label="Username"
+                name="name"
+                autoComplete="name"
                 autoFocus
               />
               <TextField

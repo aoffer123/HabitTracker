@@ -3,6 +3,7 @@ const User = require('../models/User');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
+
 // Create a new user
 const createUser = async (req, res) => {
   try {
@@ -28,14 +29,13 @@ const loginUser = async (req, res) => {
     
     try {
     const user = await User.findOne({ name });
-    const hashedPassword = await bcrypt.hash(password, 10);
     if (!user){
         res.status(500).json({
             message: "Login Failed",
             error: "User not found"
         })
     }else{
-        bcrypt.compare(hashedPassword, user.password)
+        bcrypt.compare(password, user.password)
             .then((result) =>{
                 if(result){
                     const token = jwt.sign(
@@ -61,10 +61,11 @@ const loginUser = async (req, res) => {
             })
     }
 
-    res.json(user);
+    //res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+  console.log(req.cookie);
 };
 
 
