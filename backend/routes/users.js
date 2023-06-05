@@ -6,9 +6,9 @@ router.get('/login', loginUser);
 
 router.post('/register', createUser);
 
-router.delete('/delete', deleteUser);
+router.delete('/:id', deleteUser);
 
-router.patch('/update', updateUser);
+router.patch('/:id', updateUser);
 
 
 

@@ -7,8 +7,10 @@ const jwt = require('jsonwebtoken');
 const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    console.log(req.body);
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, hashedPassword });
+    console.log({ name, email, hashedPassword });
+    const user = await User.create({ name, email, password:hashedPassword });
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -69,7 +71,8 @@ const loginUser = async (req, res) => {
 // Update a user by name
 const updateUser = async (req, res) => {
   try {
-    const { name, email, password, id } = req.body;
+    const { id } = req.params;
+    const { name, email, password } = req.body;
     const user = await User.findById(id);
     if (!user) {
       return res.status(500).json({ message: 'User not found' });
@@ -80,7 +83,7 @@ const updateUser = async (req, res) => {
     user.email = email || user.email;
     user.password = password ? await bcrypt.hash(password, 10) : user.password;
     
-    const updatedUser = await User.findByIdAndUpdate(id, user);
+    const updatedUser = {name};
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -103,8 +106,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   createUser,
-  getUsers,
-  getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  loginUser
 };

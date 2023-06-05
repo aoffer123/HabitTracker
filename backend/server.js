@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const habitRouter = require('./routes/habits');
+const userRouter = require('./routes/users');
 
 const habitTrackerApp = express();
 
@@ -18,6 +19,7 @@ habitTrackerApp.use((req,res,next) => {
 
 // routing
 habitTrackerApp.use('/api/habits',habitRouter);
+habitTrackerApp.use('/api/users',userRouter);
 
 // db connection
 mongoose.connect(process.env.MONGO_URI)
