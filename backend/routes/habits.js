@@ -1,5 +1,4 @@
 const express = require('express');
-const habitModel = require('../models/habit');
 const {createHabit, getAllHabits, getHabit, deleteHabit, updateHabit} = require('../controllers/habitController');
 const router = express.Router();
 

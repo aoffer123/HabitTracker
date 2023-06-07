@@ -45,6 +45,7 @@ export default function SignInSide() {
     const res = await fetch('api/users/login',{
       method: 'POST',
       body: JSON.stringify(user),
+      mode:"cors",
       headers: {
           'Content-Type':'application/json'
       }
@@ -56,7 +57,6 @@ export default function SignInSide() {
   }else{
       setError(null);
       navigate('/Home');
-      console.log('worked lol');
   }
 
 

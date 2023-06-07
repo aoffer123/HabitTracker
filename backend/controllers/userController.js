@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 
@@ -8,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log(req.body);
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log({ name, email, hashedPassword });
     const user = await User.create({ name, email, password:hashedPassword });
@@ -65,7 +63,6 @@ const loginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  console.log(req.cookie);
 };
 
 

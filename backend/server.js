@@ -6,23 +6,31 @@ require('dotenv').config();
 const habitRouter = require('./routes/habits');
 const userRouter = require('./routes/users');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const habitTrackerApp = express();
 
+const corsOptions = {
+    origin: [
+        "http://localhost:3000"
+    ],
+    credentials: true,
+    exposedHeaders: ["set-cookie"]
 
+};
 
 habitTrackerApp.use(express.json());
+habitTrackerApp.use(cookieParser());
 
 habitTrackerApp.use((req,res,next) => {
     console.log(req.path, req.method);
-    console.log(req.cookies);
     next();
 });
 
 // routing
-habitTrackerApp.use('/api/habits',habitRouter);
-habitTrackerApp.use('/api/users',userRouter);
-habitTrackerApp.use(cookieParser());
+habitTrackerApp.use('/api/habits',cors(corsOptions) ,habitRouter);
+habitTrackerApp.use('/api/users' ,userRouter);
+
 // db connection
 mongoose.connect(process.env.MONGO_URI)
     .then(()=>{
