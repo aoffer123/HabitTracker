@@ -67,12 +67,98 @@ const updateHabit = async (req, res) => {
     
 }
 
+const completeHabit = async (req, res) => {
+    const {id, date} = req.body;
+    
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(500).json({error: "No habit found"});
+    }
+
+    dateObj = new Date(date);
+    const formattedDate = dateObj.toLocaleDateString("en-US"); // Convert to MM/DD/YYYY format
+
+    const habit = await habitModel.findById(id);
+    
+    let completionDates = habit.completionDates;
+    let metrics = habit.metrics;
+    
+    if (!completionDates.includes(formattedDate)) {
+        // Have not completed on this day yet, post the new date and metric information.
+        // Get the day of the week
+        const dayNumber = dateObj.getDay();
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const dayName = daysOfWeek[dayNumber];
+        console.log(dayName)
+        metrics.set(dayName, String(metrics.get(dayName) + 1));
+
+        completionDates.push(formattedDate);
+        completionDates.sort((a, b) => {
+            let dateA = new Date(a);
+            let dateB = new Date(b);
+            return dateA - dateB;
+        });
+
+        console.log(completionDates);
+        metrics['Streak'] = currentStreak(completionDates);
+        metrics.set('Streak', currentStreak(completionDates))
+        metrics.set('Consistency', percentageLast30Days(completionDates))
+        habit.completionDates = completionDates;
+        habit.metrics = metrics;
+        console.log(metrics)
+        await habit.save();
+        res.status(200).json({ message: 'Habit updated' });
+    }
+    else {
+        res.status(500).json({ message: 'Date already recorded' });
+    }
+}
+
+function currentStreak(dates) {
+    let currentStreak = 1;
+
+    for (let i = dates.length - 1; i > 0; i--) {
+        const currentDate = new Date(dates[i]);
+        const previousDate = new Date(dates[i - 1]);
+
+        const diff = currentDate - previousDate;
+
+        const diffDays = diff / (1000 * 60 * 60 * 24);
+
+        if (diffDays === 1) {
+            currentStreak++;
+        } else {
+            break;
+        }
+    }
+
+    return currentStreak;
+}
+
+function percentageLast30Days(dates) {
+    let count = 0;
+    let today = new Date(dates[dates.length - 1]); 
+    let thirtyDaysAgo = new Date(dates[dates.length - 1]); 
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30); 
+
+    for (let d = thirtyDaysAgo; d <= today; d.setDate(d.getDate() + 1)) {
+        const dateString = d.toLocaleDateString("en-US"); // Convert to MM/DD/YYYY format
+
+        if (dates.includes(dateString)) {  // Search for in our completed days
+            count++;
+        }
+    }
+
+    return (count / 30) * 100; 
+}
+
+
 
 module.exports = {
     createHabit,
     getHabit,
     getAllHabits,
     deleteHabit,
-    updateHabit
+    updateHabit,
+    completeHabit
 }
 
