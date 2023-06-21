@@ -119,6 +119,9 @@ const Navbar = () => {
           <NavLink to='./SignInSide' underline="always">
           <Button color="inherit">Sign-In</Button>
           </NavLink>
+          <NavLink to='./signup' underline="always">
+            <Button color="inherit">Sign-up</Button>
+          </NavLink>
         </Toolbar>
       </AppBar>
       <Drawer

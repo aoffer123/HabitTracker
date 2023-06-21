@@ -13,7 +13,7 @@ export const Nav = styled.nav`
 `;
   
 export const NavLink = styled(Link)`
-  color: #000000;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   text-decoration: none;

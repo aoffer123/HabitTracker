@@ -10,15 +10,15 @@ const getAllHabits = async (req,res) =>{
 
 const getHabit = async (req,res) => {
     const {id} = req.params;
-
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: "No habit found"});
     }
+    const habit = await habitModel.findById(id);
 
-    const habit = habitModel.findById(id);
     if(!habit) {
         return res.status(404).json({error: "No habit found"});
     }
+    
     res.status(200).json(habit);
 };
 
