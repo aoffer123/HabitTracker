@@ -77,27 +77,28 @@ const createHabits = async (req,res) =>{
 
 const completeHabit = async (req, res) => {
     const {id, date} = req.body;
-    
+
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(500).json({error: "No habit found"});
     }
 
-    const dateObj = new Date(date);
+    dateObj = new Date(date);
     const formattedDate = dateObj.toLocaleDateString("en-US"); // Convert to MM/DD/YYYY format
 
     const habit = await habitModel.findById(id);
-    
+
     let completionDates = habit.completionDates;
     let metrics = habit.metrics;
     const dayNumber = dateObj.getDay();
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const dayName = daysOfWeek[dayNumber];
-    
-    if (!completionDates.includes(formattedDate)) {
-         // Have not completed on this day yet, post the new date and increase day of week counter
 
-         console.log(dayName)
-         metrics.set(dayName, String(metrics.get(dayName) + 1));
+    if (!completionDates.includes(formattedDate)) {
+        // Have not completed on this day yet, post the new date and increase day of week counter
+
+        console.log(dayName)
+        metrics.set(dayName, String(metrics.get(dayName) + 1));
+        completionDates.push(formattedDate);
     }
     else {
         // Decrement counter for this day of week and remove from completion dates
