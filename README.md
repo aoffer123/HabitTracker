@@ -17,8 +17,7 @@ To run the test suite while in the backend directory you can run:
 
 ### `npm run jest-w`
 
-While in the src directory you can run:
-
+To run the front end While in the src directory you can run:
 ### `npm install`
 
 Finally in the main project directory you can run:
