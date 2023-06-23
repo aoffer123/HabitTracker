@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function Copyright(props) {
   return (
@@ -28,18 +30,42 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
-  const handleSubmit = (event) => {
+export default function SignInSide(props) {
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
+
+    const user = {
+      name: data.get('name'),
       password: data.get('password'),
-    });
+    };
+
+    const res = await fetch('api/users/login', {
+      method: 'POST',
+      body: JSON.stringify(user),
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const json = await res.json();
+
+    if (!res.ok) {
+      setError(json.error);
+    } else {
+      setError(null);
+      navigate('/Home');
+    }
+
+
   };
 
   return (
     <ThemeProvider theme={theme}>
+      {error && <p>"Login Failed"</p>}
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -77,10 +103,10 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="name"
+                label="Username"
+                name="name"
+                autoComplete="name"
                 autoFocus
               />
               <TextField
@@ -105,15 +131,12 @@ export default function SignInSide() {
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
+              <Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link to="./signup">
+                    <Button variant="contained">
+                      Dont have an account? Sign up.
+                    </Button>
                   </Link>
                 </Grid>
               </Grid>

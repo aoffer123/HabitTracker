@@ -7,6 +7,10 @@ const habitSchema = new Schema({
         type: String,
         required: true
     },
+    userId: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true
@@ -22,7 +26,27 @@ const habitSchema = new Schema({
     date: {
         type: Date,
         required: true
+    },
+    completionDates: {
+        type: Array,
+        default: []
+    },
+    metrics: {
+        type: Map,
+        of: Number,
+        default: new Map([
+            ["Monday", 0],
+            ["Tuesday", 0],
+            ["Wednesday", 0],
+            ["Thursday", 0],
+            ["Friday", 0],
+            ["Saturday", 0],
+            ["Sunday", 0],
+            ["Streak", 0],
+            ["Consistency", 0]
+        ])
     }
+
 
 
 }, {timestamps: true});

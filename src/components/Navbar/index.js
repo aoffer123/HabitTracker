@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   NavLink,
 } from './NavbarElements';
@@ -8,32 +8,32 @@ import ListIcon from '@mui/icons-material/List';
 import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
+//import MenuItem from '@mui/material/MenuItem';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
+// import MenuList from '@mui/material/MenuList';
+// import Stack from '@mui/material/Stack';
+// import Paper from '@mui/material/Paper';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+// import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
-import Menu from '@mui/material/Menu';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// import InboxIcon from '@mui/icons-material/MoveToInbox';
+// import MailIcon from '@mui/icons-material/Mail';
+// import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
+// import Menu from '@mui/material/Menu';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import { purple } from '@mui/material/colors';
+//import { purple } from '@mui/material/colors';
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -55,7 +55,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   }),
 );
 
-const primary = purple[500]; // #f44336
+//const primary = purple[500];  #f44336
 
 
 const AppBar = styled(MuiAppBar, {
@@ -87,7 +87,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const Navbar = () => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -118,6 +118,9 @@ const Navbar = () => {
           </Typography>
           <NavLink to='./SignInSide' underline="always">
           <Button color="inherit">Sign-In</Button>
+          </NavLink>
+          <NavLink to='./signup' underline="always">
+            <Button color="inherit">Sign-up</Button>
           </NavLink>
         </Toolbar>
       </AppBar>

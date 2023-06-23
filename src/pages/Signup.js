@@ -12,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 
 
-const Profile = () => {
+const Signup = () => {
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -25,12 +25,13 @@ const Profile = () => {
 
   return (
     <Box
-      sx={{ width: 980, display: 'flex', flexWrap: 'wrap', justifyContent: "Center" }}>
+      sx={{ width: 980, display: 'flex', justifyContent: "center" }}>
       <Stack
         direction="column"
+        width={200}
         spacing={2}
       >
-        <h3>Profile</h3>
+        <h1>Sign Up</h1>
         <TextField
           id="user-name"
           label="User Name"
@@ -63,10 +64,7 @@ const Profile = () => {
         </FormControl>
         <Stack direction="row">
         <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
-          Save
-        </Button>
-        <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
-          Delete
+          Create Account
         </Button>
         </Stack>
 
@@ -75,4 +73,10 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Signup;
+
+
+
+
+
+
