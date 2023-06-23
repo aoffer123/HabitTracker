@@ -89,36 +89,35 @@ const completeHabit = async (req, res) => {
     
     let completionDates = habit.completionDates;
     let metrics = habit.metrics;
+    const dayNumber = dateObj.getDay();
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayName = daysOfWeek[dayNumber];
     
     if (!completionDates.includes(formattedDate)) {
-        // Have not completed on this day yet, post the new date and metric information.
-        // Get the day of the week
-        const dayNumber = dateObj.getDay();
-        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const dayName = daysOfWeek[dayNumber];
-        console.log(dayName)
-        metrics.set(dayName, String(metrics.get(dayName) + 1));
+         // Have not completed on this day yet, post the new date and increase day of week counter
 
-        completionDates.push(formattedDate);
-        completionDates.sort((a, b) => {
-            let dateA = new Date(a);
-            let dateB = new Date(b);
-            return dateA - dateB;
-        });
-
-        console.log(completionDates);
-        metrics['Streak'] = currentStreak(completionDates);
-        metrics.set('Streak', currentStreak(completionDates))
-        metrics.set('Consistency', percentageLast30Days(completionDates))
-        habit.completionDates = completionDates;
-        habit.metrics = metrics;
-        console.log(metrics)
-        await habit.save();
-        res.status(200).json({ message: 'Habit updated' });
+         console.log(dayName)
+         metrics.set(dayName, String(metrics.get(dayName) + 1));
     }
     else {
-        res.status(500).json({ message: 'Date already recorded' });
+        // Decrement counter for this day of week and remove from completion dates
+        metrics.set(dayName, String(metrics.get(dayName) - 1));
+        completionDates = completionDates.filter(i => i !== formattedDate);
     }
+    completionDates.sort((a, b) => {
+        let dateA = new Date(a);
+        let dateB = new Date(b);
+        return dateA - dateB;
+    });
+    console.log(completionDates);
+    metrics['Streak'] = currentStreak(completionDates);
+    metrics.set('Streak', currentStreak(completionDates))
+    metrics.set('Consistency', percentageLast30Days(completionDates))
+    habit.completionDates = completionDates;
+    habit.metrics = metrics;
+    console.log(metrics)
+    await habit.save();
+    res.status(200).json({ message: 'Habit updated' });
 }
 
 function currentStreak(dates) {
