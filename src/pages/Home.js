@@ -28,7 +28,7 @@ const Home = () => {
     }
 
     fetchHabits();
-  }, [])
+  }, [checked])
     const loadDate = () => {
       const twoWeeks = ["","","","","","","", "","","","","","",""];
       const today = new Date(Date.now()).getDay();
@@ -55,6 +55,10 @@ const Home = () => {
 
       setWeek(twoWeeks);
     }
+    const onloadChecked = (completionDates,date) => {
+      return completionDates.includes(date);
+    }
+     
 
     
   
@@ -75,6 +79,7 @@ const Home = () => {
               'Content-Type': 'application/json'
           }
       })
+      setChecked(!checked)
       }
     }
 
@@ -121,46 +126,46 @@ const Home = () => {
                 {habit.name}
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[0]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[0]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[0])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[1]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[1]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[1])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[2]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[2]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[2])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[3]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[3]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[3])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[4]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[4]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[4])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[5]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[5]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[5])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[6]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[6]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[6])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[7]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[7]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[7])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[8])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[9])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[10]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[10]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[10])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[11]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[11]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[11])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[12]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[12]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[12])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[13]},${habit._id}`}}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[13]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[13])}></Checkbox>
               </TableCell>
             </TableRow>
             

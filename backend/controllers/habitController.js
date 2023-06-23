@@ -74,7 +74,7 @@ const completeHabit = async (req, res) => {
         return res.status(500).json({error: "No habit found"});
     }
 
-    dateObj = new Date(date);
+    const  dateObj = new Date(date);
     const formattedDate = dateObj.toLocaleDateString("en-US"); // Convert to MM/DD/YYYY format
 
     const habit = await habitModel.findById(id);
