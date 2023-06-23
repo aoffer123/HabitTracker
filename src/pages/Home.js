@@ -153,7 +153,7 @@ const Home = () => {
                 <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[8])}></Checkbox>
               </TableCell>
               <TableCell>
-                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[9])}></Checkbox>
+                <Checkbox inputProps={{'id':`${week[9]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[9])}></Checkbox>
               </TableCell>
               <TableCell>
                 <Checkbox inputProps={{'id':`${week[10]},${habit._id}`}} defaultChecked={onloadChecked(habit.completionDates,week[10])}></Checkbox>

@@ -25,7 +25,7 @@ const getHabit = async (req,res) => {
 const createHabit = async (req,res) =>{
     const {name,description,category,importance,date} = req.body;
     const userId = jwt.decode(req.cookies.jwt, process.env.KEY).id;
-    try { 
+    try {
         const newHabit = await habitModel.create({name,userId,description,category,importance,date});
         res.status(200).json(newHabit);
     } catch (e) {
@@ -50,12 +50,10 @@ const deleteHabit = async (req,res) => {
 
 const updateHabit = async (req, res) => {
     const {id} = req.params;
-
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: "No habit found"});
     }
-
-    const habit = await habitModel.findOneAndUpdate({_id: id}, {
+    const habit = await habitModel.findByIdAndUpdate({_id: id}, {
         ...req.body
     });
 
@@ -66,6 +64,16 @@ const updateHabit = async (req, res) => {
     res.status(200).json(habit);
     
 }
+const createHabits = async (req,res) =>{
+    const {name,description,category,importance,date} = req.body;
+    const userId = jwt.decode(req.cookies.jwt, process.env.KEY).id;
+    try {
+        const newHabit = {name,userId,description,category,importance,date};
+        return newHabit;
+    } catch (e) {
+        return {error: "Failed to Create Habit"};
+    }
+}
 
 const completeHabit = async (req, res) => {
     const {id, date} = req.body;
@@ -74,43 +82,43 @@ const completeHabit = async (req, res) => {
         return res.status(500).json({error: "No habit found"});
     }
 
-    const  dateObj = new Date(date);
+    const dateObj = new Date(date);
     const formattedDate = dateObj.toLocaleDateString("en-US"); // Convert to MM/DD/YYYY format
 
     const habit = await habitModel.findById(id);
     
     let completionDates = habit.completionDates;
     let metrics = habit.metrics;
-    const dayNumber = dateObj.getDay();
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const dayName = daysOfWeek[dayNumber];
     
     if (!completionDates.includes(formattedDate)) {
-        // Have not completed on this day yet, post the new date and increase day of week counter
-        
+        // Have not completed on this day yet, post the new date and metric information.
+        // Get the day of the week
+        const dayNumber = dateObj.getDay();
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const dayName = daysOfWeek[dayNumber];
         console.log(dayName)
         metrics.set(dayName, String(metrics.get(dayName) + 1));
+
         completionDates.push(formattedDate);
+        completionDates.sort((a, b) => {
+            let dateA = new Date(a);
+            let dateB = new Date(b);
+            return dateA - dateB;
+        });
+
+        console.log(completionDates);
+        metrics['Streak'] = currentStreak(completionDates);
+        metrics.set('Streak', currentStreak(completionDates))
+        metrics.set('Consistency', percentageLast30Days(completionDates))
+        habit.completionDates = completionDates;
+        habit.metrics = metrics;
+        console.log(metrics)
+        await habit.save();
+        res.status(200).json({ message: 'Habit updated' });
     }
     else {
-        // Decrement counter for this day of week and remove from completion dates
-        metrics.set(dayName, String(metrics.get(dayName) - 1));
-        completionDates = completionDates.filter(i => i !== formattedDate);
+        res.status(500).json({ message: 'Date already recorded' });
     }
-    completionDates.sort((a, b) => {
-        let dateA = new Date(a);
-        let dateB = new Date(b);
-        return dateA - dateB;
-    });
-    console.log(completionDates);
-    metrics['Streak'] = currentStreak(completionDates);
-    metrics.set('Streak', currentStreak(completionDates))
-    metrics.set('Consistency', percentageLast30Days(completionDates))
-    habit.completionDates = completionDates;
-    habit.metrics = metrics;
-    console.log(metrics)
-    await habit.save();
-    res.status(200).json({ message: 'Habit updated' });
 }
 
 function currentStreak(dates) {
@@ -153,8 +161,11 @@ function percentageLast30Days(dates) {
 
 
 
+
+
 module.exports = {
     createHabit,
+    createHabits,
     getHabit,
     getAllHabits,
     deleteHabit,
