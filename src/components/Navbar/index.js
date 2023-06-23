@@ -116,11 +116,8 @@ const Navbar = () => {
           <Typography variant="h6"  component="div" sx={{ flexGrow: 1 }}>
             Menu
           </Typography>
-          <NavLink to='./SignInSide' underline="always">
-          <Button color="inherit">Sign-In</Button>
-          </NavLink>
-          <NavLink to='./signup' underline="always">
-            <Button color="inherit">Sign-up</Button>
+          <NavLink to='./Logout' underline="always">
+          <Button color="inherit">Logout</Button>
           </NavLink>
         </Toolbar>
       </AppBar>

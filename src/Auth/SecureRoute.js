@@ -1,11 +1,10 @@
-import React , {Children, useState, useEffect} from 'react'
+import React , {Children} from 'react'
 import { Navigate } from 'react-router-dom'
 
 
 
-const SecureRoute = ({children},props) => {
-    console.log(props.val)
-  return (props.val) ? children:<Navigate to="/SignInSide" /> 
+const SecureRoute = ({children}) => {
+  return (document.cookie.indexOf("jwt") !== -1) ? children:<Navigate to="/" /> 
 }
 
 export {SecureRoute};

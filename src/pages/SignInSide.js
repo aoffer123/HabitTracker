@@ -65,7 +65,7 @@ export default function SignInSide(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      {error && <p>"Login Failed"</p>}
+      
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -98,6 +98,7 @@ export default function SignInSide(props) {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+            {error && <p>Login Failed</p>}
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -133,11 +134,9 @@ export default function SignInSide(props) {
               </Button>
               <Grid>
                 <Grid item>
-                  <Link to="./signup">
-                    <Button variant="contained">
+                  <Button variant="contained" href='/Signup'>
                       Dont have an account? Sign up.
                     </Button>
-                  </Link>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />

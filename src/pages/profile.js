@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -13,14 +14,60 @@ import Button from '@mui/material/Button';
 
 
 const Profile = () => {
-
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
+  const [email, setemail] = useState("");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const saveUser = async () => {
+    const res = await fetch(`/api/users/`,
+    {
+        method: 'PATCH',
+        body: JSON.stringify({ username, password, email}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const json = await res.json();
+    if (res.ok) {
+        console.log(json)
+    }
+  };
+  const deleteUser = async () => {
+    const res = await fetch(`/api/users/`,
+    {
+        method: 'DELETE',
+    })
+    const json = await res.json();
+    if (res.ok) {
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+
+    const fetchUser = async () => {
+        const res = await fetch(`/api/users/`, {
+            method: 'GET',
+        })
+        const json = await res.json();
+        if (res.ok) {
+            setusername(json.name);
+            setemail(json.email);
+            setpassword(json.password);
+        }
+        
+    }
+
+    fetchUser();
+}, [])
 
 
   return (
@@ -34,11 +81,15 @@ const Profile = () => {
         <TextField
           id="user-name"
           label="User Name"
+          value={username}
+          onChange={e=>setusername(e.target.value)}
         >
         </TextField>
         <TextField
           id="user-email"
           label="User Email"
+          value={email}
+          onChange={e=>setemail(e.target.value)}
         >
         </TextField>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -59,13 +110,15 @@ const Profile = () => {
               </InputAdornment>
             }
             label="Password"
+            value={password}
+            onChange={e=>setpassword(e.target.value)}
           />
         </FormControl>
         <Stack direction="row">
-        <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
+        <Button variant="contained" onClick={saveUser} sx={{ m: 2, width: '25ch' }}>
           Save
         </Button>
-        <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
+        <Button variant="contained" onClick={deleteUser} sx={{ m: 2, width: '25ch' }}>
           Delete
         </Button>
         </Stack>

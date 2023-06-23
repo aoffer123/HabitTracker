@@ -1,11 +1,9 @@
-
-
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
@@ -13,6 +11,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 const Edit = () => {
+    const navigate = useNavigate();
     const location = useLocation()
     const [id, setid] = useState(location.state.id);
 
@@ -28,6 +27,33 @@ const Edit = () => {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
     const [importance, setImportance] = useState('');
+
+    
+    const saveHabit = async () => {
+        console.log()
+        const res = await fetch(`/api/habits/${id}`,
+        {
+            method: 'PATCH',
+            body: JSON.stringify({ name, description, category, importance}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json = await res.json();
+        if (res.ok) {
+            console.log(json)
+        }
+    };
+    
+    const deleteHabit = async () => {
+        const res = await fetch(`/api/habits/${id}`, {
+            method: 'DELETE',
+        })
+        const json = await res.json();
+        if (res.ok) {
+            navigate('/doing');
+        }
+    };
 
 
     useEffect(() => {
@@ -70,7 +96,7 @@ const Edit = () => {
                         id="habit-description"
                         label="Description"
                         value={description}
-                        onChange={(e)=>{setName(e.target.value)}}
+                        onChange={(e)=>{setDescription(e.target.value)}}
                     >
                     </TextField>
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -107,10 +133,10 @@ const Edit = () => {
                         <MenuItem value={"Trivial"}>Trivial</MenuItem>
                     </Select>
                     <Stack direction="row">
-                    <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
+                    <Button variant="contained" onClick={saveHabit} sx={{ m: 2, width: '25ch' }}>
                         Save
                     </Button>
-                    <Button variant="contained" sx={{ m: 2, width: '25ch' }}>
+                    <Button variant="contained" onClick={deleteHabit} sx={{ m: 2, width: '25ch' }}>
                         Delete
                     </Button>
                     </Stack>
