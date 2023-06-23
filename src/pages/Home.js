@@ -30,22 +30,30 @@ const Home = () => {
     fetchHabits();
   }, [])
     const loadDate = () => {
-      const week = ["","","","","","",""];
+      const twoWeeks = ["","","","","","","", "","","","","","",""];
       const today = new Date(Date.now()).getDay();
       const todayDate = new Date(Date.now());
       const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      for (let index = 0; index < today; index++) {
-        week[index] = new Date(todayDate);
-        week[index].setDate(todayDate.getDate()-(today - index));
-        week[index] = week[index].toLocaleDateString("en-US")
-        
+      // Load the current week and next week of the habit
+      let i = 1;
+      let i2 = 7;
+      for (let index = 0; index < twoWeeks.length; index++) {
+        if (index <= 7)  // Loading previous week
+        {
+          twoWeeks[index] = new Date(todayDate);
+          twoWeeks[index].setDate(todayDate.getDate()- i2);
+          i2 -= 1;
+        }
+        else  // Loading next week
+        {
+          twoWeeks[index] = new Date(todayDate + i);
+          twoWeeks[index].setDate(todayDate.getDate()+(i));
+          i++;
+        }
+        twoWeeks[index] = twoWeeks[index].toLocaleDateString("en-US")
       }
-      for (let index = today; index < daysOfWeek.length; index++) {
-        week[index] = new Date(todayDate);
-        week[index].setDate(todayDate.getDate()+(index));
-        week[index] = week[index].toLocaleDateString("en-US")
-      }
-      setWeek(week);
+
+      setWeek(twoWeeks);
     }
 
     
@@ -59,6 +67,7 @@ const Home = () => {
           date:date,
           id:id
         }
+        console.log(completedHabit)
         await fetch('api/habits/complete', {
           method: 'POST',
           body: JSON.stringify(completedHabit),
@@ -92,6 +101,13 @@ const Home = () => {
           <TableCell>{week && week[4]}</TableCell>
           <TableCell>{week && week[5]}</TableCell>
           <TableCell>{week && week[6]}</TableCell>
+          <TableCell>{week && week[7]}</TableCell>
+          <TableCell>{week && week[8]}</TableCell>
+          <TableCell>{week && week[9]}</TableCell>
+          <TableCell>{week && week[10]}</TableCell>
+          <TableCell>{week && week[11]}</TableCell>
+          <TableCell>{week && week[12]}</TableCell>
+          <TableCell>{week && week[13]}</TableCell>
         </TableRow>
       </TableHead>
         <TableBody>
@@ -125,9 +141,35 @@ const Home = () => {
               <TableCell>
                 <Checkbox inputProps={{'id':`${week[6]},${habit._id}`}}></Checkbox>
               </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[7]},${habit._id}`}}></Checkbox>
+              </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}}></Checkbox>
+              </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[8]},${habit._id}`}}></Checkbox>
+              </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[10]},${habit._id}`}}></Checkbox>
+              </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[11]},${habit._id}`}}></Checkbox>
+              </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[12]},${habit._id}`}}></Checkbox>
+              </TableCell>
+              <TableCell>
+                <Checkbox inputProps={{'id':`${week[13]},${habit._id}`}}></Checkbox>
+              </TableCell>
             </TableRow>
+            
+            
           ))}
+
+
         </TableBody>
+        
       </Table>
     </TableContainer>
 
